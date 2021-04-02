@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- This is normalize.css, used to reset browser-specific styles. -->
+    <link rel="stylesheet" href="style/normalize.css">
+    <!-- Fonts -->
+    <link rel="stylesheet" href="fonts/fonts.css">
+    <!-- Main css for this site -->
+    <link rel="stylesheet" href="style/main.css">
+    <title>Frontend Intro</title>
+  </head>
+  <body>
+    <header>
+      <h1>Frontend Intro</h1>
+    </header>
+    <section>
+      <h2>HTML5 Tags</h2>
+      <p>
+        Every single beginner loves copy-pasting HTML code from the web. I don't think that's wrong, actually.
+        However, one should pay more attention to "where the code comes from".
+      </p>
+      <p>
+        Ask your self several questions next time before pressing <kbd>Ctrl</kbd> + <kbd>C</kbd> and <kbd>Ctrl</kbd> + <kbd>V</kbd> 's:
+        <ol>
+          <li>Is the code reviewed (if not recommended) by coding gurus?</li>
+          <li>When was the code written? Frontend technologies evolves at lightning speed, and the code you found can be outdated.</li>
+          <li>does it contain <i>depreciated</i> usage of APIs / HTML tags?</li>
+        </ol>
+      </p>
+      <p>
+        Personally speaking, I'm strongly against copying HTML code from some public blog site (especially Wordpress and CSDN).
+        That's because experienced frontend engineers tend to run their own blog sites.
+        <a href="https://stackoverflow.com">StackOverflow</a> is a good place for green hands, since answers there are selected and edited by pros.
+      </p>
+      <p>
+        For details about HTML5 tags, do not hesitate to refer to <a href="https://developer.mozilla.org/">Mozilla Developer Network</a>.
+        Articles there are eagerly translated into dozens of languages (including Chinese) by volunteers, so language won't be a problem.
+      </p>
+      <h3>stop using div tags everywhere</h3>
+      <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div">MDN Docs</a> describe div as a generic container for flow content.
+      In the years before HTML5, it had been used as a container for literally anything. However, this is not a good practice because HTML5 introduced content sectioning tags.
+      
+      Take a look at <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element#content_sectioning">those elements</a> on MDN.
+      
+      <section class="practice" id="htmlTagsPractice">
+        <h4>Try it yourself!</h4>
+
+        Design a blog landing page. The page contains a header (with a h1 title inside), 2 articles and a footer (containing copyright notices, etc).
+        <br>
+        Note: articles should be wrapped by a <code>main</code> tag. You only need to code the parts inside <code>body</code> tag.
+
+        <textarea class="target"></textarea>
+        <button>Check your answer</button>
+        <span class="hint"></span>
+      </section>
+    </section>
+
+    <section>
+      <h2>Devtools</h2>
+      In this section, I assume that you're using Google Chrome or Mozilla Firefox.
+      The new Microsoft Edge also works in most cases, since it's a chromium-based browser.
+      <h3>How to open</h3>
+      <ul>
+        <li>Windows/Linux: <kbd>F12</kbd></li>
+        <li>Mac OS: <kbd>⌥</kbd>+<kbd>⌘</kbd>+<kbd>I</kbd></li>
+      </ul>
+      <section class="practice" id="devTools1Practice">
+        <h4>Try it yourself!</h4>
+
+        Use devtools to modify the list below. Replace the second item with "Tacos".
+
+        <div class="target">
+          Lunch
+          <ul>
+            <li>Sandwich</li>
+            <li>French fries</li>
+            <li>Spaghetti</li>
+          </ul>
+        </div>
+
+        <button>Check your answer</button>
+        <span class="hint"></span>
+      </section>
+      <p>
+        Also, have a try with CSS styles...
+        <section class="practice" id="devTools2Practice">
+          <h4>Try it yourself!</h4>
+
+          Use devtools to modify the styles of contents below.
+          <br>
+
+
+          <div class="target">
+            This is a simple text. <span id="devTools2T1" class="emphasized-text">This sentence should be red.</span>
+            <span id="devTools2T2" class="hidden-text">This sentence shouldn't be visible.</span>
+          </div>
+
+          <button>Check your answer</button>
+          <span class="hint"></span>
+        </section>
+      </p>
+      <h3>Network tab</h3>
+      When it comes to frontend, speed is the most important factor. Poorly designed webpages can take a minute to load, leading to awful user experience.
+      There're too much to talk about when it comes to page speed optimization - we won't cover them today, because some tricks can be advanced.
+      However, you can have a basic idea about such optimization by simply navigating to "network" tab.
+      <section class="practice" id="devTools3Practice">
+        <h4>Question</h4>
+        How many font files are loaded by this page? <input type="number" class="target">
+        <button>Check your answer</button>
+        <span class="hint"></span>
+      </section>
+      <h3>Debugging</h3>
+      Find out where are the correct answers to questions above stored in JavaScript. <!-- Show how to use manually -->
+    </section>
+    <script src="./js/main.mjs" type="module"></script>
+  </body>
+</html>

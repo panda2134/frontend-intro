@@ -1,0 +1,65 @@
+@font-face {
+  font-family: 'Bebas Neue';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./Bebas_Neue/BebasNeue-Regular.ttf);
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./Montserrat/Montserrat-Regular.ttf);
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./Montserrat/Montserrat-Italic.ttf);
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(./Montserrat/Montserrat-Bold.ttf)
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(./Montserrat/Montserrat-BoldItalic.ttf);
+}
+
+@font-face {
+  font-family: 'Cascadia Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./CascadiaMono/CascadiaMono.woff2);
+}
+@font-face {
+  font-family: 'Cascadia Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(./CascadiaMono/CascadiaMono-Bold.woff2);
+}
+@font-face {
+  font-family: 'Cascadia Mono';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(./CascadiaMono/CascadiaMono-Light.woff2);
+}
+@font-face {
+  font-family: 'Cascadia Mono';
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url(./CascadiaMono/CascadiaMono-ExtraLight.woff2);
+}

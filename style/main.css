@@ -1,0 +1,119 @@
+body {
+  margin-left: 20vw;
+  margin-right: 20vw;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: #eee;
+  font-family: 'Montserrat';
+}
+
+@media (max-width: 767px) {
+  body {
+    margin: 20px;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Bebas Neue';
+}
+
+h1 {
+  font-size: 50px;
+}
+
+h2 {
+  font-size: 35px;
+}
+
+h3 {
+  font-size: 30px;
+}
+
+h4 {
+  font-size: 25px;
+}
+
+input[type="number"]{
+  width: 100px;
+}
+
+button {
+  padding: 2px 15px;
+  border: 2px solid black;
+  font-family: 'Bebas Neue';
+  font-size: 18px;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button:active {
+  background-color: #ddd;
+}
+
+.target {
+  border: 2px solid black;
+}
+
+div.target {
+  padding: 1em;
+}
+
+textarea {
+  border: 2px solid black;
+  padding: 0.5em;
+  display: block;
+  font-family: 'Cascadia Mono', monospace;
+}
+
+kbd {
+  border-radius: 10px;
+  padding: 1px 5px;
+  line-height: calc(1em + 6px + 2px + 4px);
+  border: 3px solid #aaa;
+  font-family: 'Cascadia Mono', monospace;
+  background-color: white;
+}
+
+a {
+  color: #006FFF;
+}
+
+a:active {
+  color: B30DFF;
+}
+
+code, pre {
+  font-family: 'Cascadia Mono', monospace;
+}
+
+.practice {
+  border-left: 6px solid #456DFF;
+  padding-left: 1.5em;
+}
+
+.practice > div.target, .practice > textarea.target {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  width: 100%;
+}
+
+.practice > textarea.target {
+  min-height: 20vh;
+}
+
+.hint {
+  display: none;
+  margin-left: 1em;
+}
+
+.hint--ok {
+  display: inline;
+  color: #019c20;
+}
+
+.hint--error {
+  display: inline;
+  color: #ff3300;
+}
