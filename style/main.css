@@ -106,6 +106,7 @@ code, pre {
 .hint {
   display: none;
   margin-left: 1em;
+  font-weight: 600;
 }
 
 .hint--ok {
