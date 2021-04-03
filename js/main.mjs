@@ -35,7 +35,6 @@ const practiceCheckers = {
     if (ul === null) {
       return [false, 'You wrongly removed ul. Try again.', true]
     }
-    console.log(ul.children[1]?.innerText)
     if (ul.children[1]?.innerText === 'Tacos') {
       return [true, 'Correct!']
     } else if (ul.children[1]?.innerText === 'French fries') {
