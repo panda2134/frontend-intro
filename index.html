@@ -147,8 +147,10 @@
 > typeof undefined
 'undefined'</pre>
         You should be very careful with arguments of a function: they can be nullish values!
-        <h5>Useful operators when dealing with nullish values</h5>
-        Newer versions of JavaScript introduced some operators to simplify the handling of nullish values. The first is optional chaining(<code>?.</code>):
+        <p>
+          Useful operators when dealing with nullish values.
+          Newer versions of JavaScript introduced some operators to simplify the handling of nullish values. The first is optional chaining(<code>?.</code>):
+        </p>
 <pre class="hljs lang-javascript">
 > function hasDimension(options) { return typeof (options?.dimension) == 'number'; }
 > hasDimension(null)
@@ -200,7 +202,7 @@ true
 <pre class="hljs lang-javascript">
 > 1 == true
 true
-> 0 == +null
+> 0 == +null // + is a unary operator
 true
 > 6 == '6'
 true
