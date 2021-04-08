@@ -239,7 +239,7 @@ false</pre>
         <p>
           The following function calculated the distance to origin of a point \(u \in \R^n\), which is given as an array of numbers
           (if its not an array, or its length is 0, return undefined). 
-          Its third argument is an object (possibly null!) containing options for the function. If the 3rd argument contains 
+          The third argument of the function is an object (possibly null!) containing options for the function. If the 3rd argument contains 
           <code>distance: "manhattan"</code> then the Manhattan distance should be calculated. If  
           <code>distance: "minkovski"</code> then the Minkovski distance should be calculated.
           Otherwise(i.e. it does not contain <code>distance</code>, or <code>options == null</code>), the Euclidean distance will be calculated.
@@ -296,7 +296,7 @@ function dist(vec, options) { // this line has been written for you.
                       1.0 / dimension)
   }
 } // this line has been written for you.</pre>
-</details>
+      </details>
     </section>
     <script src="./js/main.mjs" type="module"></script>
   </body>
