@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="fonts/fonts.css">
     <!-- Main css for this site -->
     <link rel="stylesheet" href="style/main.css">
+    <!-- CSS For Highlight.js -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.2/build/styles/atom-one-dark.min.css">
+    <!-- CSS For KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.css" integrity="sha384-Cqd8ihRLum0CCg8rz0hYKPoLZ3uw+gES2rXQXycqnL5pgVQIflxAUDS7ZSjITLb5" crossorigin="anonymous">
     <title>Frontend Intro</title>
   </head>
   <body>
@@ -24,7 +28,7 @@
         <ol>
           <li>Is the code reviewed (if not recommended) by coding gurus?</li>
           <li>When was the code written? Frontend technologies evolves at lightning speed, and the code you found can be outdated.</li>
-          <li>does it contain <i>depreciated</i> usage of APIs / HTML tags?</li>
+          <li>does it contain <i>depreciated</i> usage of APIs / HTML tags? (e.g. <code>&lt;marquee&gt;</code>, <code>&lt;center&gt;</code>, ...)</li>
         </ol>
       </p>
       <p>
@@ -105,13 +109,192 @@
       However, you can have a basic idea about such optimization by simply navigating to "network" tab.
       <section class="practice" id="devTools3Practice">
         <h4>Question</h4>
-        How many font files are loaded by this page? <input type="number" class="target">
+        <p>
+          How many font files are loaded by this page? <input type="number" class="target">
+        </p>
         <button>Check your answer</button>
         <span class="hint"></span>
       </section>
       <h3>Debugging</h3>
-      Find out where are the correct answers to questions above stored in JavaScript. Then set up breakpoints in the code.
+      The debugging tab can help with your debugging process. Have a try with the example below.
+      <section class="practice" id="devTools4Practice">
+        <h4>Try it yourself!</h4>
+        <p>
+          The correct answer is "foo". Change the JavaScript code underneath so any non-empty string is a correct answer.
+          <input type="text" class="target">
+        </p>
+        <button>Check your answer</button>
+        <span class="hint"></span>
+      </section>
       <!-- Show how to use manually -->
+    </section>
+    <section>
+      <h2>JavaScript</h2>
+      <p>
+        Many find JavaScript to be annoying, but after understanding its basics you may feel like saved.
+        If used properly, its dynamic weak typing can actually accelerate your development, despite some drawbacks.
+        <h3>Common Pitfalls and Solutions</h3>
+        <div class="center">
+          <img src="./img/coercion.jpg" alt="JavaScript Coercion Meme">
+        </div> 
+        <h4>Null and Undefined</h4>
+        JavaScript has 2 categories of nullish values. One is <code>null</code> and another is <code>undefined</code>.
+        However they are used in different ways. While <code>undefined</code> are usually used as a default value if nothing has been specified
+        explicitly, <code>null</code> is used as a default value for objects.
+<pre class="hljs lang-javascript">
+> typeof null
+'object'
+> typeof undefined
+'undefined'</pre>
+        You should be very careful with arguments of a function: they can be nullish values!
+        <h5>Useful operators when dealing with nullish values</h5>
+        Newer versions of JavaScript introduced some operators to simplify the handling of nullish values. The first is optional chaining(<code>?.</code>):
+<pre class="hljs lang-javascript">
+> function hasDimension(options) { return typeof (options?.dimension) == 'number'; }
+> hasDimension(null)
+false
+> hasDimension({})
+false
+> hasDimension({ dimension: 4 })
+true
+</pre>
+        Another operator is the nullish coalescing operator(<code>??</code>). This can provide a default value in case of nullish variables:
+<pre class="hljs lang-javascript">
+> const options = { distance: 'minkovski' }
+> const dim = options.dimension ?? 2 
+> dim // Suppose we'd like to provide a default in case of nullish values
+2
+> options.dimension || 2 // interesting enough, || also works here! However, limits apply.
+2
+> options.dimension = 0
+0
+> options.dimension ?? 2 // Output is 0 !!!
+0
+> options.dimension || 2 // This is WRONG.
+2
+</pre>
+        Before <code>??</code> is a thing, programmers used <code>||</code>.
+        Its truthy value is calculated after converting each operand into boolean variables.
+        However, its return value is selected from original operands.
+
+        <p>
+          Note: not every browser support these operators, but modern ones do.
+          Notoriously, Internet Explorer do not support them. (btw who on earth is still using IE?)
+        </p>
+
+        <h4>Basic types</h4>
+        The types below are the basic types in JavaScript. 
+        <ul>
+          <li>String</li>
+          <li>Boolean</li>
+          <li>Number</li>
+          <li>BigInt</li>
+          <li>Symbol</li>
+          <li>Function</li>
+          <li>Object</li>
+          <li>Null</li>
+          <li>Undefined</li>
+        </ul>
+        Some common mistakes: first, pay attention to comparision and arithmetic operators.
+        Quirks are that numbers can be casted into strings, and booleans can be casted into numbers.
+<pre class="hljs lang-javascript">
+> 1 == true
+true
+> 0 == +null
+true
+> 6 == '6'
+true
+> 1+2+3+4+5+'6'
+'156'</pre>
+To avoid these behaviors, you should change your <code>&equals;&equals;</code>'s into <code>&equals;&equals;&equals;</code>'s.
+<pre class="hljs lang-javascript">
+> 6 == '6'
+true
+> 6 === '6'
+false
+</pre>
+      </p>
+      What's more, avoid using the <code>typeof</code> operator on complex objects, since they'll always return <code>"object"</code>.
+<pre class="hljs lang-javascript">
+> typeof (new Array())
+'object'
+> typeof (new Date())
+'object'
+> typeof (new Set())
+'object'</pre>
+      Instead, you should use <code>instanceof</code>:
+<pre class="hljs lang-javascript">
+> const array = new Array()
+> array instanceof Array
+true
+> array instanceof Object
+true
+> array instanceof Date
+false</pre>
+      <section class="practice" id="jsNullishPractice">
+        <h4>Try it yourself!</h4>
+
+        <p>
+          The following function calculated the distance to origin of a point \(u \in \R^n\), which is given as an array of numbers
+          (if its not an array, or its length is 0, return undefined). 
+          Its third argument is an object (possibly null!) containing options for the function. If the 3rd argument contains 
+          <code>distance: "manhattan"</code> then the Manhattan distance should be calculated. If  
+          <code>distance: "minkovski"</code> then the Minkovski distance should be calculated.
+          Otherwise(i.e. it does not contain <code>distance</code>, or <code>options == null</code>), the Euclidean distance will be calculated.
+        </p>
+        <p>
+          In the case of Minkovski distance,
+          if another property <code>dimension</code> is given, then it will be used as the parameter \( p \) for Minkovski distance;
+          otherwise it will fall back to \( p = 2 \), which is just Euclidean distance.
+        </p>
+        \begin{align}
+        \text{ManhattanDistance}(u) &= \sum |u_i|\\
+        \text{MinkovskiDistance}(u) &= \left(\sum u_i^p\right)^{1/p}
+        \end{align}
+
+        several examples here:
+<pre class="hljs lang-javascript">
+dist(null) // return undefined
+dist([]) // return undefined
+dist([3, 4]) // return: 5
+dist([3, 4], {}) // return: 5
+dist([3, 4], {distance: "manhattan"}) // returns: 7
+dist([3, 4], {distance: "minkovski"}) // returns: 5
+dist([3, 4], {distance: "minkovski", dimension: 2}) // returns: 5
+dist([3, 4], {distance: "minkovski", dimension: 3}) // returns: about 4.49794</pre>
+        Code your solution below:
+<pre class="hljs lang-javascript">
+function dist(vec, options) {
+</pre>
+        <textarea class="target"></textarea>
+<pre class="hljs lang-javascript">
+}
+</pre>
+        <button>Check your answer</button>
+        <span class="hint"></span>
+      </section>
+      The exercise above contains many points covered in this chapter. For your convenience, the answer is listed below.
+      <details>
+        <summary>A Possible Solution</summary>
+<pre class="hljs lang-javascript">
+function dist(vec, options) { // this line has been written for you.
+  if (! (vec instanceof Array) || vec.length == 0) {
+    return
+  }
+  const distanceType = options?.distance ?? "euclidean"
+  let dimension = options?.dimension ?? 2
+
+  switch (distanceType) {
+    case "manhattan":
+      return vec.reduce((s, x) => s + Math.abs(x))
+    case "euclidean":
+      dimension = 2
+    case "minkovski":
+      return Math.pow(vec.reduce((s, x) => s + Math.pow(x, dimension), 0),
+                      1.0 / dimension)
+  }
+} // this line has been written for you.</pre>
+</details>
     </section>
     <script src="./js/main.mjs" type="module"></script>
   </body>

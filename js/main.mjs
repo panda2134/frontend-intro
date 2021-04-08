@@ -1,4 +1,11 @@
 import parseColor from 'https://cdn.skypack.dev/parse-color'
+import hljs from 'https://cdn.skypack.dev/highlight.js/lib/core'
+import hljsLangHtml from 'https://cdn.skypack.dev/highlight.js/lib/languages/xml'
+import hljsLangCss from 'https://cdn.skypack.dev/highlight.js/lib/languages/css'
+import hljsLangJavascript from 'https://cdn.skypack.dev/highlight.js/lib/languages/javascript'
+import unescape from 'https://cdn.skypack.dev/unescape'
+import katex from 'https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.mjs'
+import renderMathInElement from "https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/contrib/auto-render.mjs"
 
 const practiceCheckers = {
   htmlTagsPractice(target) {
@@ -64,6 +71,42 @@ const practiceCheckers = {
     } else {
       return [false, 'Wrong answer. 4 fonts are loaded.']
     }
+  },
+  devTools4Practice(target) { // Judging code for Practice 4 of Devtools
+    if (target.value == 'foo') {
+      return [true, 'Correct!']
+    } else {
+      return [false, 'Wrong answer.']
+    }
+  },
+  jsNullishPractice(target) {
+    const testCases = [
+      [[null], undefined],
+      [[new Date()], undefined],
+      [[new Date(), {}], undefined],
+      [[new Date(), {dimension: 3}], undefined],
+      [[new Date(), {distance: 'minkovski', dimension: 3}], undefined],
+      [[new Array()], undefined],
+      [[[5, 12]], 13],
+      [[[5, 12], {}], 13],
+      [[[5, 12], {distance: 'manhattan'}], 17],
+      [[[5, 12], {distance: 'minkovski'}], 13],
+      [[[5, 12], {distance: 'minkovski', dimension: 3}], 12.28264235951734]
+    ]
+    const func = new Function('vec', 'options', target.value)
+    for (const [args, ans] of testCases) {
+      console.log(args, ans)
+      let rv
+      try {
+        rv = func(...args)
+      } catch (e) {
+        return [false, `Failed on ${JSON.stringify(args)}, ${e}`]
+      }
+      if (ans !== rv) { // we just forget about floating point issues
+        return [false, `Failed on ${JSON.stringify(args)}, ${ans} expected but ${rv} found`]
+      }
+    }
+    return [true, 'Correct']
   }
 }
 
@@ -90,3 +133,18 @@ for (const k of Object.keys(practiceCheckers)) {
     }
   })
 }
+function renderHljsInElement(ele) {
+  hljs.registerLanguage('html', hljsLangHtml)
+  hljs.registerLanguage('css', hljsLangCss)
+  hljs.registerLanguage('javascript', hljsLangJavascript)
+
+  for (const language of ['html', 'css', 'javascript']) {
+    ele.querySelectorAll(`pre.hljs.lang-${language}`).forEach(x => {
+      const highlighted = hljs.highlight(unescape(x.innerHTML), { language }).value
+      x.innerHTML = highlighted
+    })
+  }
+}
+
+renderHljsInElement(document.body)
+renderMathInElement(document.body)

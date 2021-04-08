@@ -2,7 +2,12 @@
 
 An introduction to modern frontend technology
 
-## what to teach
+## how to serve
+
+```bash
+$ npx http-server
+```
+## what to talk about
 
 - basic usage of semantic tags in html5
 - devtools

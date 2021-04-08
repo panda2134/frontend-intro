@@ -91,6 +91,7 @@ code, pre {
 .practice {
   border-left: 6px solid #456DFF;
   padding-left: 1.5em;
+  margin: 20px 0;
 }
 
 .practice > div.target, .practice > textarea.target {
@@ -117,4 +118,10 @@ code, pre {
 .hint--error {
   display: inline;
   color: #ff3300;
+}
+
+.center {
+  display: grid;
+  align-items: center;
+  justify-items: center;
 }
