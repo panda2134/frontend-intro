@@ -95,7 +95,6 @@ const practiceCheckers = {
     ]
     const func = new Function('vec', 'options', target.value)
     for (const [args, ans] of testCases) {
-      console.log(args, ans)
       let rv
       try {
         rv = func(...args)

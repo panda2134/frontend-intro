@@ -13,6 +13,10 @@ body {
   }
 }
 
+* {
+  box-sizing: border-box;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Bebas Neue';
 }
@@ -124,4 +128,15 @@ code, pre {
   display: grid;
   align-items: center;
   justify-items: center;
+}
+
+.code-filling pre {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.code-filling textarea {
+  margin: 0;
+  width: 100%;
+  min-height: 150px;
 }
