@@ -107,6 +107,23 @@ const practiceCheckers = {
     }
     return [true, 'Correct']
   },
+  async jsPromisePractice (target) {
+    const func = new Function('msecs', target.value)
+    try {
+      const startTime = Date.now()
+      const waitMsecs = Math.random() * 100 + 100
+      await func(waitMsecs)
+      const endTime = Date.now()
+      console.log(waitMsecs, startTime, endTime)
+      if (Math.abs(endTime - startTime - waitMsecs) > 5) {
+        return [false, `Should wait for ${waitMsecs}, but waited for ${endTime - startTime}`]
+      } else {
+        return [true, 'Correct']
+      }
+    } catch (e) {
+      return [false, `Failed: ${e}`]
+    }
+  },
   jsHoistingPractice (target) {
     if (target.value === '444') {
       return [true, 'Correct']
@@ -116,7 +133,6 @@ const practiceCheckers = {
       return [false, 'Try again.']
     }
   },
-
   jsImportPractice(target) {
     const reComment = /(\/\/.*\n|\/\*.*\*\/)/g
     const code = target.value.split('\n')
@@ -146,8 +162,12 @@ for (const k of Object.keys(practiceCheckers)) {
   const target = currentPractice.querySelector('.target')
   const hintElement = currentPractice.querySelector('.hint')
   practiceReset[k] = target.innerHTML
-  submitBtn.addEventListener('click', () => {
-    const [result, hint, reset] = (practiceCheckers[k])(target)
+  submitBtn.addEventListener('click', async () => {
+    let rv = (practiceCheckers[k])(target)
+    if (rv instanceof Promise) {
+      rv = await rv
+    }
+    const [result, hint, reset] = rv
     if (result) {
       hintElement.classList.remove('hint--error')
       hintElement.classList.add('hint--ok')
