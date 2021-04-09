@@ -1,10 +1,10 @@
 import parseColor from 'https://cdn.skypack.dev/parse-color'
+import confetti from 'https://cdn.skypack.dev/canvas-confetti'
 import hljs from 'https://cdn.skypack.dev/highlight.js/lib/core'
 import hljsLangHtml from 'https://cdn.skypack.dev/highlight.js/lib/languages/xml'
 import hljsLangCss from 'https://cdn.skypack.dev/highlight.js/lib/languages/css'
 import hljsLangJavascript from 'https://cdn.skypack.dev/highlight.js/lib/languages/javascript'
 import unescape from 'https://cdn.skypack.dev/unescape'
-import katex from 'https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.mjs'
 import renderMathInElement from "https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/contrib/auto-render.mjs"
 
 const practiceCheckers = {
@@ -115,7 +115,27 @@ const practiceCheckers = {
     } else {
       return [false, 'Try again.']
     }
-  }
+  },
+
+  jsImportPractice(target) {
+    const reComment = /(\/\/.*\n|\/\*.*\*\/)/g
+    const code = target.value.split('\n')
+      .filter(line => line.match(/\S/)).map(line => line.replace(reComment, ''))
+    const reImport = /^\s*import\s+([A-Za-z_][A-Za-z0-9_]*|\{\s*(?:[A-Za-z_][A-Za-z0-9_]*\s*,\s*)*[A-Za-z_][A-Za-z0-9_]*\s*,?\s*\})\s+from\s+('.+'|".+")\s*;?\s*$/;
+    const importedModules = {}
+    code.forEach((val) => {
+      let match
+      if ((match = val.match(reImport)) != null && match[2].length >= 3) {
+        importedModules[match[1]] = match[2].substring(1, match[2].length-1)
+      }
+    })
+    if (importedModules.parseColor !== 'https://cdn.skypack.dev/parse-color'
+      || importedModules.confetti !== 'https://cdn.skypack.dev/canvas-confetti') {
+      return [false, 'Try again']
+    } else {
+      return [true, 'Correct']
+    }
+  },
 }
 
 const practiceReset = {}
@@ -131,6 +151,7 @@ for (const k of Object.keys(practiceCheckers)) {
     if (result) {
       hintElement.classList.remove('hint--error')
       hintElement.classList.add('hint--ok')
+      confetti()
     } else {
       hintElement.classList.add('hint--error')
       hintElement.classList.remove('hint--ok')

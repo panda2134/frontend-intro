@@ -1,15 +1,13 @@
 body {
-  margin-left: 20vw;
-  margin-right: 20vw;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 20px;
   background-color: #eee;
   font-family: 'Montserrat';
 }
 
-@media (max-width: 767px) {
+@media only screen and (min-width: 850px) {
   body {
-    margin: 20px;
+    margin-left: 20vw;
+    margin-right: 20vw;
   }
 }
 

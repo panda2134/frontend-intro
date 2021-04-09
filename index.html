@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.css" integrity="sha384-Cqd8ihRLum0CCg8rz0hYKPoLZ3uw+gES2rXQXycqnL5pgVQIflxAUDS7ZSjITLb5" crossorigin="anonymous">
     <!-- FavIcon -->
     <link rel="shortcut icon" href="favicon.png">
+    <!-- Responsive -->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Frontend Intro</title>
   </head>
   <body>
@@ -137,9 +139,9 @@
         If used properly, its dynamic weak typing can actually accelerate your development, despite some drawbacks.
         <h3>Common Pitfalls and Solutions</h3>
         <div class="center">
-          <img src="./img/coercion.jpg" alt="JavaScript Coercion Meme">
+          <img src="./img/coercion.jpg" alt="JavaScript Coercion Meme" style="width: 80%;">
         </div> 
-        <h4>Null and Undefined</h4>
+        <h3>Null and Undefined</h3>
         JavaScript has 2 categories of nullish values. One is <code>null</code> and another is <code>undefined</code>.
         However they are used in different ways. While <code>undefined</code> are usually used as a default value if nothing has been specified
         explicitly, <code>null</code> is used as a default value for objects.
@@ -186,7 +188,7 @@ true
           Notoriously, Internet Explorer do not support them. (btw who on earth is still using IE?)
         </p>
 
-        <h4>Basic types</h4>
+        <h3>Basic types</h3>
         The types below are the basic types in JavaScript. 
         <ul>
           <li>String</li>
@@ -252,8 +254,8 @@ false</pre>
           otherwise it will fall back to \( p = 2 \), which is just Euclidean distance.
         </p>
         \begin{align}
-        \text{ManhattanDistance}(u) &= \sum |u_i|\\
-        \text{MinkovskiDistance}(u) &= \left(\sum u_i^p\right)^{1/p}
+        \text{Manhattan}(u) &= \sum |u_i|\\
+        \text{Minkovski}(u) &= \left(\sum u_i^p\right)^{1/p}
         \end{align}
 
         several examples here:
@@ -301,7 +303,7 @@ function dist(vec, options) { // this line has been written for you.
   }
 } // this line has been written for you.</pre>
       </details>
-      <h4>Object Inheritance</h4>
+      <h3>Object Inheritance</h3>
       <p>
         In JavaScript, object inheritance, which is based on <i>prototype</i> rather than <i>classes</i>,
         is far different from traditional Object-Oriented practices. In fact there's no real "classes" in JavaScript!
@@ -320,6 +322,12 @@ class Vec2D {
   }
   length () {
     return Math.sqrt(x * x + y * y)
+  }
+}
+
+class MyVec2D extends Vec2D {
+  clear () {
+    this.x = this.y = 0
   }
 }</pre>
       <p>
@@ -357,7 +365,7 @@ function testThis() {
 }
 testThis.apply(obj) // output is still { foo: 1 }</pre>
       </p>
-      <h4>Syntactic Sugar 🍬</h4>
+      <h3>Syntactic Sugar 🍬</h3>
       Talk is cheap, just look at the code below!
 <pre class="hljs lang-javascript">
 /* Object related */
@@ -390,7 +398,7 @@ for (let value of arr) { // in -> index
   console.log(value)
 } // 6 2 1
 </pre>
-      <h4>Hoisting</h4>
+      <h3>Hoisting</h3>
       Let's just start with a question:
       <section class="practice" id="jsHoistingPractice">
         <h4>Question</h4>
@@ -398,7 +406,7 @@ for (let value of arr) { // in -> index
 function main() {
   var output = ''
   for (var i = 1; i <= 3; i++) {
-  setTimeout(() => {output += String(i)}, 1000)
+    setTimeout(() => {output += String(i)}, 1000)
   }
   setTimeout(() => console.log(output), 1500)
 }
@@ -425,8 +433,9 @@ main()</pre>
         There're no other scopes, and particularly, JavaScript will not create a new lexical scope of <code>var</code> for each pair of curly braces.
       </p>
       <p>
-        An approximated mental model of <code>var</code>'s is: 
-        just consider all their declarations are moved to the start of function (or start of file) before any code is executed.
+        A mental model of <code>var</code>'s is: 
+        all their declarations are moved to the start of function (or start of file)
+        before any code is executed.
       </p>
       <p>
         Most of the cases hoisting is not the expected behavior. Switching to let / const:
@@ -447,7 +456,7 @@ obj.foo = 'bar' // this works because the reference to object is not changed
 </pre>
         They just behave like variables in most languages, and global variabled declared with let / const will not become a property of <code>globalThis</code>. Sweet.
       </p>
-      <h4>MapReduce</h4>
+      <h3>MapReduce</h3>
       The methods map/forEach/reduce exist on any array instance (again, in modern browsers).
       Use them instead of for loops to simplify your code.
 <pre class="hljs lang-javascript">
@@ -457,14 +466,200 @@ console.log(arr.reduce((s, x) => s + x)) // sum is 10
 </pre>
       For more <abbr title="Functional Programming">FP</abbr>-style functions, try <a href="https://www.npmjs.com/package/lodash">lodash</a>.
 
-      <h4>Promise and Async functions</h4>
+      <h3>Promise and Async functions</h3>
+      <p>
+        JavaScript code is ran in a single thread, however it is capable of handling a heavy workload.
+        The magic behind is "event loop": methods of time-consuming actions, like HTTP Requests,
+        accept a callback parameter. Once the action is done, the callback function will be called.
+      </p>
+      <p>
+        However, having too much callback functions is not a good thing. Look at the Node.js code below:
+<pre class="hljs lang-javascript">
+const fs = require('fs')
+fs.readFile('./a.txt', (dataA) => {
+  console.log(dataA.length)
+  fs.readFile('./b.txt', (dataB) => {
+    console.log(dataB.length)
+    fs.readFile('./c.txt', (dataC) =>{
+      console.log(dataC.length) // nested functions!
+    })
+  })
+})
+</pre>
+        <code>Promise</code> provides a way of getting rid of nested functions.
+<pre class="hljs lang-javascript">
+const { readFile } = require('fs/promises');
+
+readFile('./a.txt').then(
+  (x) => {
+    console.log(x.length)
+    return readFile('./b.txt')
+  }
+).then(
+  (x) => {
+    console.log(x.length)
+    return readFile('./c.txt')
+  }
+).then(
+  (x) => {
+    console.log(x.length)
+  }
+)
+</pre>
+        The code above used the Promise API of file reading in Node.js. A promise can be constructed in the following way:
+<pre class="hljs lang-javascript">
+const pr = new Promise((resolve, reject) => {
+  // asynchronous operations
+  // when ready, call resolve(results)
+  // in case of error, call reject(error)
+})
+pr.then((results1) => {
+  // what to do in the next step?
+  // if another promise is returned, the next handler will wait for it
+}).then((results2) => {
+  // do something to the resolved result of the previous promise
+})
+</pre>
+        Promises actually form a chain, just like callback chain, with nested functions
+        replaced by <code>resolve</code> and <code>reject</code>.
+      </p>
+      <h3>Async and Await</h3>
+      <p>
+      These 2 keywords are just syntactic sugar; a certain async function
+<pre class="hljs lang-javascript">
+async foo() {
+  // block 1
+  let rv = await anotherAsyncFunction();
+  // block 2
+}
+const pr = foo()
+</pre>
+      can be directly translated into:
+<pre class="hljs lang-javascript">
+const pr = new Promise((resolve, reject) => {
+  // block 1
+  return anotherAsyncFunction().then((rv) => {
+    // block 2
+  }).catch(e => reject(e))
+})</pre>
+        This syntactic sugar can turn promise-based code into normal code that runs "sequentially".
+      </p>
+      <p>
+        Let's rewrite the code of reading 3 text files with <code>async</code>'s!
+<pre class="hljs lang-javascript">
+const { readFile } = require('fs/promises');
+
+async function main() {
+  let x
+  x = await readFile('./a.txt')
+  console.log(x.length)
+  x = await readFile('./b.txt')
+  console.log(x.length)
+  x = await readFile('./c.txt')
+  console.log(x.length)
+}
+
+main()
+</pre>
+        Note: newer versions of V8 Engine support <code>await</code> outside of functions.
+        However we'll just stick to using it in <code>async</code> functions.
+      </p>
       <!-- How promises work; how to declare async functions -->
-      <h4>A Brief Explanation on Package Management</h4>
-      <!-- script tags -> requirejs -> adapted commonjs style require -> bundlers like webpack -> ES6 imports (deno?) -->
-      <h4>Useful APIs</h4>
+      <h3>A Brief Explanation on Package Management</h3>
+      <p> <!-- Example: info.tsinghua.edu.cn -->
+        There're too much to talk about on this matter: JavaScript had had no "import" before several years ago.
+        If your code depend on other libraries, you should add the script tag of the library before the script tag of yours.
+        Soon as the number of number of dependencies increase, your script tags become a mess, because they have to be loaded in the correct order.
+      </p>
+      <p>
+        Then tools like RequireJS appeared. It required all scripts following a specific module definition format (AMD/UMD/CommonJS),
+        and the tool handles all the importing for you. An example of AMD Module looks like this:
+<pre class="hljs lang-javascript">
+define(['jquery'], function ($) {
+  $(function() {
+    // blahblahblah
+  }) // run after the page is loaded
+})
+</pre>
+        However this is still annoying: you have to download all dependencies of your code manually from the web,
+        and loading too much dependencies is certainly detrimental to the load speed.
+      </p>
+      <p>
+        People then turned to Node.js, since it has an package management system called <code>npm</code>.
+        They coded build tools for frontend code, which are called bundlers. The popular bundlers are: Webpack, Rollup(used by vue-cli), Browserify, to name but a few.
+        Bundlers came out and dominated frontend development till now. They build the production-ready code from your original codebase,
+        help with CommonJS Style <code>require</code> statements, and "polyfill" your code when needed.
+        As a result, you're able to use <code>require</code> in frontend code just as in Node.js, and you can use the latest syntax of JavaScript
+        without breaking backward compatibility.
+      </p>
+      <p>
+        The ES Modules are introduced by ECMAScript 6 in 2015.
+        They provided support for modules in the language itself, rather than an addon or a build tool.
+        Most bundlers also support ES Module Syntax (just like you've probably seen in Vue/React projects).
+        However, the syntax used in bundlers (path or package in node_modules) is slightly different to the language specification.
+        If you want to use imports directly in browsers, you should use a relative or absolute path to the module,
+        because there's no such thing as node_modules in this context.
+      </p>
+      <p>
+        Note: do not try to use import directly on CommonJS modules in the browser. If you're using a bundler, then everything's fine
+        since the bundler will generate some code to help with the interoperability.
+        However, the native <code>import</code> statement is incompatible with CommonJS modules (because you don't have <code>require</code> in a browser).
+        Use <a href="https://skypack.dev">Skypack</a> to help you translate CommonJS modules to ES modules.
+        This service allows you to import any package on <a href="https://npmjs.com">NPM Registry</a> into your code directly,
+        since it does the transpilation under the hood.
+      </p>
+      <p>
+        Fact: The successor of Node.js, <a href="https://deno.land">Deno</a>, abandoned the design of node_modules
+        and switched to importing from URLs with ES6 <code>import</code>.
+      </p>
+      <section class="practice" id="jsImportPractice">
+        <h4>Try it yourself!</h4>
+
+        <p>
+          Use ES6 syntax to import 2 modules: one at <code>https://cdn.skypack.dev/canvas-confetti</code>,
+          another at <code>https://cdn.skypack.dev/parse-color</code>.
+          Then inspect the second URL in a new tab manually to see how skypack transpiled the original code and removed calls to <code>require</code>.
+        </p>
+
+        Code your solution below:
+        <div class="code-filling">
+          <textarea class="target"></textarea>
+<pre class="hljs lang-javascript">
+console.log(parseColor('#ffa500'))
+confetti()</pre>
+        </div>
+        <button>Check your answer</button>
+        <span class="hint"></span>
+      </section>
+      <h3>Useful APIs</h3>
       Since the time of this workshop is limited, we'll only have a look at <code>Element.querySelector</code> and <code>fetch</code>.
-      <h4>Event propagation in DOMs</h4>
-      <!-- History. Provide a link. bubbling and capturing-->
+      Again, refer to MDN when you're puzzled by API-related problems.
+
+<pre class="hljs lang-javascript">
+document.querySelector('pre.hljs') // select all <pre> tags with class hljs
+
+fetch('https://jsonplaceholder.typicode.com/posts')
+  .then(x => x.json()).then(x => console.log(x.length)) // perform a GET request to the server
+fetch('https://jsonplaceholder.typicode.com/posts', { // perform a POST request to the server
+  method: 'POST',
+  body: JSON.stringify({
+    title: 'foo',
+    body: 'bar',
+    userId: 1,
+  }),
+  headers: {
+    'Content-type': 'application/json',
+  },
+})
+  .then(x => x.json())
+  .then(x => console.log(x))
+</pre>
+    </section>
+    <section>
+      <h2>Styling</h2>
+    </section>
+    <section>
+      <h2>HTTP Basics</h2>
     </section>
     <script src="./js/main.mjs" type="module"></script>
   </body>
