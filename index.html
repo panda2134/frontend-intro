@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.2/build/styles/atom-one-dark.min.css">
     <!-- CSS For KaTeX -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.css" integrity="sha384-Cqd8ihRLum0CCg8rz0hYKPoLZ3uw+gES2rXQXycqnL5pgVQIflxAUDS7ZSjITLb5" crossorigin="anonymous">
+    <!-- FavIcon -->
+    <link rel="shortcut icon" href="favicon.png">
     <title>Frontend Intro</title>
   </head>
   <body>
@@ -299,6 +301,170 @@ function dist(vec, options) { // this line has been written for you.
   }
 } // this line has been written for you.</pre>
       </details>
+      <h4>Object Inheritance</h4>
+      <p>
+        In JavaScript, object inheritance, which is based on <i>prototype</i> rather than <i>classes</i>,
+        is far different from traditional Object-Oriented practices. In fact there's no real "classes" in JavaScript!
+        Each object is created with a function (and of course, <code>new</code> operator).
+        When a property is not found on an object, a search along the prototype chain is performed. 
+        <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain">Read more about this on MDN</a>.
+      </p>
+      <p>
+        However, newer JavaScript language specifications have defined the keyword <code>class</code> and <code>extends</code>,
+        which can be used to emulate the behavior of inheritance based on classes.
+      </p> <!-- Speaker Note: Talk about the prototype chain in Node.js! Compare both ways of inheritance -->
+<pre class="hljs lang-javascript">
+class Vec2D {
+  constructor (x = 0, y = 0) { // default parameter in case of undefined
+    this.x = x; this.y = y;
+  }
+  length () {
+    return Math.sqrt(x * x + y * y)
+  }
+}</pre>
+      <p>
+        Another thing which is worth noticing is the <code>this</code> keyword.
+        If a method of an object is called (e.g. <code>obj.foo()</code>), <code>this</code> is binded
+        to the method itself (i.e. <code>obj</code>) in the function body. However <code>this</code> can also be manually binded.
+      </p>
+<pre class="hljs lang-javascript">
+const obj = {
+  foo: 1
+}
+function testThis() {
+  console.log(this)
+}
+testThis.apply(obj) // output is { foo: 1 }</pre>
+      <p>
+        There are actually 2 types of function in JavaScript, that is, "normal" functions and "arrow" functions. Arrow functions can be created like this:
+<pre class="hljs lang-javascript">
+const logEvent = (event) => { console.log(event.target) }
+// logEvent is an arrow function (pay attention to curly braces)
+const xPlus2 = x => x + 2
+// xPlus2 receives a number and add 2 to it, then return the added value
+// there's no curly braces, hence the value of the expression after => is returned.
+</pre>
+        Attention: You cannot bind <code>this</code> to an arrow function. They actually do not have their own lexical <code>this</code>.
+<pre class="hljs lang-javascript">
+const obj = {
+  foo: 1
+}
+function testThis() {
+  const t = (() => {
+    console.log(this)
+  }).bind({baz: 2}) // this will NOT work
+  t()
+}
+testThis.apply(obj) // output is still { foo: 1 }</pre>
+      </p>
+      <h4>Syntactic Sugar 🍬</h4>
+      Talk is cheap, just look at the code below!
+<pre class="hljs lang-javascript">
+/* Object related */
+const baz = 'foobar'
+const obj = {
+  foo () { // no need to write `"foo": function()`
+    return 'bar'
+  },
+  bar: 1, // quotation marks in keys can be omitted in most cases
+  baz // equivalent to "baz": baz
+}
+
+/* Unpacking */
+const { bar } = obj // now bar == 1
+const arr = [6, 2, 1]
+const [a0, a1] = arr // now a0 == 6, a1 == 2, arr[2] is discarded
+const powArgs = [3, 2]
+console.log(Math.pow(...powArgs)) // argument unpacking, output is 9
+function testFunc(...args) {
+  console.log(args.length) // now args is an array containing all arguments.
+  // NOTE: use this to replace the use of `arguments`
+}
+testFunc(3, 4, 5) // output is 3
+
+/* For loops */
+for (let index in arr) { // in -> index
+  console.log(index)
+} // 0 1 2
+for (let value of arr) { // in -> index
+  console.log(value)
+} // 6 2 1
+</pre>
+      <h4>Hoisting</h4>
+      Let's just start with a question:
+      <section class="practice" id="jsHoistingPractice">
+        <h4>Question</h4>
+<pre class="hljs lang-javascript">
+function main() {
+  var output = ''
+  for (var i = 1; i <= 3; i++) {
+  setTimeout(() => {output += String(i)}, 1000)
+  }
+  setTimeout(() => console.log(output), 1500)
+}
+main()</pre>
+        <p>
+          What's the output of the code above? <input type="text" class="target">
+        </p>
+        <button>Check your answer</button>
+        <span class="hint"></span>
+      </section>
+      Variable declared with the keyword <code>var</code> have 2 types of lexical scopes.
+      <ul>
+        <li>
+          Global Scope(when declared outside of any function):
+          the variable then becomes a property of <code>globalThis</code>
+          (<code>window</code> in browsers and <code>global</code> in Node.js)
+        </li>
+        <li>
+          Functional Scope(when declared in a function):
+          the variable is accessible in the whole function
+        </li>
+      </ul>
+      <p>
+        There're no other scopes, and particularly, JavaScript will not create a new lexical scope of <code>var</code> for each pair of curly braces.
+      </p>
+      <p>
+        An approximated mental model of <code>var</code>'s is: 
+        just consider all their declarations are moved to the start of function (or start of file) before any code is executed.
+      </p>
+      <p>
+        Most of the cases hoisting is not the expected behavior. Switching to let / const:
+<pre class="hljs lang-javascript">
+{
+  let a = 1
+  // console.log(b); // error!
+  {
+    let b = 2
+    console.log(b)
+  }
+}
+//console.log(a) // error!
+const c = 4
+//c = 5 // error!
+const obj = {}
+obj.foo = 'bar' // this works because the reference to object is not changed 
+</pre>
+        They just behave like variables in most languages, and global variabled declared with let / const will not become a property of <code>globalThis</code>. Sweet.
+      </p>
+      <h4>MapReduce</h4>
+      The methods map/forEach/reduce exist on any array instance (again, in modern browsers).
+      Use them instead of for loops to simplify your code.
+<pre class="hljs lang-javascript">
+const arr = [1, 2, 3, 4]
+console.log(arr.map(x => x + 2)) // [3, 4, 5, 6]
+console.log(arr.reduce((s, x) => s + x)) // sum is 10
+</pre>
+      For more <abbr title="Functional Programming">FP</abbr>-style functions, try <a href="https://www.npmjs.com/package/lodash">lodash</a>.
+
+      <h4>Promise and Async functions</h4>
+      <!-- How promises work; how to declare async functions -->
+      <h4>A Brief Explanation on Package Management</h4>
+      <!-- script tags -> requirejs -> adapted commonjs style require -> bundlers like webpack -> ES6 imports (deno?) -->
+      <h4>Useful APIs</h4>
+      Since the time of this workshop is limited, we'll only have a look at <code>Element.querySelector</code> and <code>fetch</code>.
+      <h4>Event propagation in DOMs</h4>
+      <!-- History. Provide a link. bubbling and capturing-->
     </section>
     <script src="./js/main.mjs" type="module"></script>
   </body>

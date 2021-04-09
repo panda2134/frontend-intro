@@ -106,6 +106,15 @@ const practiceCheckers = {
       }
     }
     return [true, 'Correct']
+  },
+  jsHoistingPractice (target) {
+    if (target.value === '444') {
+      return [true, 'Correct']
+    } else if (target.value === '123') {
+      return [false, 'Oops, common mistake!']
+    } else {
+      return [false, 'Try again.']
+    }
   }
 }
 
