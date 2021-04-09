@@ -130,6 +130,11 @@ code, pre {
   justify-items: center;
 }
 
+.code-filling {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
 .code-filling pre {
   margin-top: 0;
   margin-bottom: 0;
