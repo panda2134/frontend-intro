@@ -149,7 +149,7 @@
         JavaScript has 2 categories of nullish values. One is <code>null</code> and another is <code>undefined</code>.
         However they are used in different ways. While <code>undefined</code> are usually used as a default value if nothing has been specified
         explicitly, <code>null</code> is used as a default value for objects.
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 > typeof null
 'object'
 > typeof undefined
@@ -159,7 +159,7 @@
           Useful operators when dealing with nullish values.
           Newer versions of JavaScript introduced some operators to simplify the handling of nullish values. The first is optional chaining(<code>?.</code>):
         </p>
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 > function hasDimension(options) { return typeof (options?.dimension) == 'number'; }
 > hasDimension(null)
 false
@@ -169,7 +169,7 @@ false
 true
 </pre>
         Another operator is the nullish coalescing operator(<code>??</code>). This can provide a default value in case of nullish variables:
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 > const options = { distance: 'minkovski' }
 > const dim = options.dimension ?? 2 
 > dim // Suppose we'd like to provide a default in case of nullish values
@@ -207,7 +207,7 @@ true
         </ul>
         Some common mistakes: first, pay attention to comparision and arithmetic operators.
         Quirks are that numbers can be casted into strings, and booleans can be casted into numbers.
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 > 1 == true
 true
 > 0 == +null // + is a unary operator
@@ -217,7 +217,7 @@ true
 > 1+2+3+4+5+'6'
 '156'</pre>
 To avoid these behaviors, you should change your <code>&equals;&equals;</code>'s into <code>&equals;&equals;&equals;</code>'s.
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 > 6 == '6'
 true
 > 6 === '6'
@@ -225,7 +225,7 @@ false
 </pre>
       </p>
       What's more, avoid using the <code>typeof</code> operator on complex objects, since they'll always return <code>"object"</code>.
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 > typeof (new Array())
 'object'
 > typeof (new Date())
@@ -233,7 +233,7 @@ false
 > typeof (new Set())
 'object'</pre>
       Instead, you should use <code>instanceof</code>:
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 > const array = new Array()
 > array instanceof Array
 true
@@ -263,7 +263,7 @@ false</pre>
         \end{align}
 
         several examples here:
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 dist(null) // return undefined
 dist([]) // return undefined
 dist([3, 4]) // return: 5
@@ -274,11 +274,11 @@ dist([3, 4], {distance: "minkovski", dimension: 2}) // returns: 5
 dist([3, 4], {distance: "minkovski", dimension: 3}) // returns: about 4.49794</pre>
         Code your solution below:
         <div class="code-filling">
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 function dist(vec, options) {
 </pre>
         <textarea class="target"></textarea>
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 }
 </pre>
         </div>
@@ -288,7 +288,7 @@ function dist(vec, options) {
       The exercise above contains many points covered in this chapter. For your convenience, the answer is listed below.
       <details>
         <summary>A Possible Solution</summary>
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 function dist(vec, options) { // this line has been written for you.
   if (! (vec instanceof Array) || vec.length == 0) {
     return
@@ -319,7 +319,7 @@ function dist(vec, options) { // this line has been written for you.
         However, newer JavaScript language specifications have defined the keyword <code>class</code> and <code>extends</code>,
         which can be used to emulate the behavior of inheritance based on classes.
       </p> <!-- Speaker Note: Talk about the prototype chain in Node.js! Compare both ways of inheritance -->
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 class Vec2D {
   constructor (x = 0, y = 0) { // default parameter in case of undefined
     this.x = x; this.y = y;
@@ -339,7 +339,7 @@ class MyVec2D extends Vec2D {
         If a method of an object is called (e.g. <code>obj.foo()</code>), <code>this</code> is binded
         to the method itself (i.e. <code>obj</code>) in the function body. However <code>this</code> can also be manually binded.
       </p>
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 const obj = {
   foo: 1
 }
@@ -349,7 +349,7 @@ function testThis() {
 testThis.apply(obj) // output is { foo: 1 }</pre>
       <p>
         There are actually 2 types of function in JavaScript, that is, "normal" functions and "arrow" functions. Arrow functions can be created like this:
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 const logEvent = (event) => { console.log(event.target) }
 // logEvent is an arrow function (pay attention to curly braces)
 const xPlus2 = x => x + 2
@@ -357,7 +357,7 @@ const xPlus2 = x => x + 2
 // there's no curly braces, hence the value of the expression after => is returned.
 </pre>
         Attention: You cannot bind <code>this</code> to an arrow function. They actually do not have their own lexical <code>this</code>.
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 const obj = {
   foo: 1
 }
@@ -371,7 +371,7 @@ testThis.apply(obj) // output is still { foo: 1 }</pre>
       </p>
       <h3>Syntactic Sugar 🍬</h3>
       Talk is cheap, just look at the code below!
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 /* Object related */
 const baz = 'foobar'
 const obj = {
@@ -406,7 +406,7 @@ for (let value of arr) { // in -> index
       Let's just start with a question:
       <section class="practice" id="jsHoistingPractice">
         <h4>Question</h4>
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 function main() {
   var output = ''
   for (var i = 1; i <= 3; i++) {
@@ -443,7 +443,7 @@ main()</pre>
       </p>
       <p>
         Most of the cases hoisting is not the expected behavior. Switching to let / const:
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 {
   let a = 1
   // console.log(b); // error!
@@ -463,7 +463,7 @@ obj.foo = 'bar' // this works because the reference to object is not changed
       <h3>MapReduce</h3>
       The methods map/forEach/reduce exist on any array instance (again, in modern browsers).
       Use them instead of for loops to simplify your code.
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 const arr = [1, 2, 3, 4]
 console.log(arr.map(x => x + 2)) // [3, 4, 5, 6]
 console.log(arr.reduce((s, x) => s + x)) // sum is 10
@@ -478,7 +478,7 @@ console.log(arr.reduce((s, x) => s + x)) // sum is 10
       </p>
       <p>
         However, having too much callback functions is not a good thing. Look at the Node.js code below:
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 const fs = require('fs')
 fs.readFile('./a.txt', (dataA) => {
   console.log(dataA.length)
@@ -491,7 +491,7 @@ fs.readFile('./a.txt', (dataA) => {
 })
 </pre>
         <code>Promise</code> provides a way of getting rid of nested functions.
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 const { readFile } = require('fs/promises');
 
 readFile('./a.txt').then(
@@ -511,7 +511,7 @@ readFile('./a.txt').then(
 )
 </pre>
         The code above used the Promise API of file reading in Node.js. A promise can be constructed in the following way:
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 const pr = new Promise((resolve, reject) => {
   // asynchronous operations
   // when ready, call resolve(results)
@@ -539,16 +539,16 @@ pr.then((results1) => {
 
         Code your solution below:
         <div class="code-filling">
-          <pre class="hljs lang-javascript">function timeout(msecs) {</pre>
+          <pre class="shiki lang-js">function timeout(msecs) {</pre>
           <textarea class="target"></textarea>
-          <pre class="hljs lang-javascript">}</pre>
+          <pre class="shiki lang-js">}</pre>
         </div>
         <button>Check your answer</button>
         <span class="hint"></span>
       </section>
       <details>
         <summary>A possible solution</summary>
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 function timeout(msecs) {
   return new Promise(resolve => setTimeout(resolve, msecs))
 }</pre>
@@ -556,7 +556,7 @@ function timeout(msecs) {
       <h3>Async and Await</h3>
       <p>
       These 2 keywords are just syntactic sugar; a certain async function
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 async foo() {
   // block 1
   let rv = await anotherAsyncFunction();
@@ -565,7 +565,7 @@ async foo() {
 const pr = foo()
 </pre>
       can be directly translated into:
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 const pr = new Promise((resolve, reject) => {
   // block 1
   return anotherAsyncFunction().then((rv) => {
@@ -576,7 +576,7 @@ const pr = new Promise((resolve, reject) => {
       </p>
       <p>
         Let's rewrite the code of reading 3 text files with <code>async</code>'s!
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 const { readFile } = require('fs/promises');
 
 async function main() {
@@ -604,7 +604,7 @@ main()
       <p>
         Then tools like RequireJS appeared. It required all scripts following a specific module definition format (AMD/UMD/CommonJS),
         and the tool handles all the importing for you. An example of AMD Module looks like this:
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 define(['jquery'], function ($) {
   $(function() {
     // blahblahblah
@@ -659,7 +659,7 @@ define(['jquery'], function ($) {
         Code your solution below:
         <div class="code-filling">
           <textarea class="target"></textarea>
-<pre class="hljs lang-javascript">
+<pre class="shiki lang-js">
 console.log(parseColor('#ffa500'))
 confetti()</pre>
         </div>
@@ -670,8 +670,8 @@ confetti()</pre>
       Since the time of this workshop is limited, we'll only have a look at <code>Element.querySelector</code> and <code>fetch</code>.
       Again, refer to MDN when you're puzzled by API-related problems.
 
-<pre class="hljs lang-javascript">
-document.querySelector('pre.hljs') // select all &lt;pre&gt; tags with class hljs
+<pre class="shiki lang-js">
+document.querySelector('pre.shiki') // select all &lt;pre&gt; tags with class shiki
 
 fetch('https://jsonplaceholder.typicode.com/posts')
   .then(x => x.json()).then(x => console.log(x.length)) // perform a GET request to the server
@@ -695,7 +695,7 @@ fetch('https://jsonplaceholder.typicode.com/posts', { // perform a POST request 
       <a href="https://developer.mozilla.org/zh-CN/docs/Learn/CSS/First_steps">A Good Tutorial</a>
       <h3>Box Model</h3>
       Open the Devtools to have a look: where's margin / padding / border?
-<pre class="hljs lang-css">
+<pre class="shiki lang-css">
 * {
   box-sizing: border-box;
 }</pre>
@@ -705,11 +705,11 @@ fetch('https://jsonplaceholder.typicode.com/posts', { // perform a POST request 
       For inline ones <code>margin-top/margin-bottom</code> simply don't work, and they do not expand horizontally like block elements.
       <h3>BEM Naming Convention</h3>
       Most of the CSS Classes are named like
-      <pre class="hljs lang-css">.block__element--modifier</pre>
+      <pre class="shiki lang-css">.block__element--modifier</pre>
       where block is the parent container, element is the class name for target, and modifier indicates its state.
       <h3>How to vertically center an element?</h3>
       Use the following class on its parent element:
-<pre class="hljs lang-css">
+<pre class="shiki lang-css">
 .vert-center {
   display: grid;
   align-items: center;
@@ -733,10 +733,10 @@ fetch('https://jsonplaceholder.typicode.com/posts', { // perform a POST request 
       </iframe>
       <h3>Responsive Web Design and CSS Media Queries</h3>
       To start with, use the following code in your HTML Header:
-<pre class="hljs lang-html"><!-- Responsive -->
+<pre class="shiki lang-html"><!-- Responsive -->
 <meta name="viewport" content="width=device-width,initial-scale=1.0"></pre>
       And then apply different style to different screen sizes:
-<pre class="hljs lang-css">
+<pre class="shiki lang-css">
 /* Part of CSS Code for this tutorial */
 body {
   margin: 20px;

@@ -1,10 +1,7 @@
 import parseColor from 'https://cdn.skypack.dev/parse-color'
 import confetti from 'https://cdn.skypack.dev/canvas-confetti'
-import hljs from 'https://cdn.skypack.dev/highlight.js/lib/core'
-import hljsLangHtml from 'https://cdn.skypack.dev/highlight.js/lib/languages/xml'
-import hljsLangCss from 'https://cdn.skypack.dev/highlight.js/lib/languages/css'
-import hljsLangJavascript from 'https://cdn.skypack.dev/highlight.js/lib/languages/javascript'
-import unescape from 'https://cdn.skypack.dev/unescape'
+import * as shiki from 'https://cdn.skypack.dev/pin/shiki@v0.10.1-QnvsKUU5sBTvK5vB3Avt/mode=imports,min/optimized/shiki.js'
+import unescape from 'https://cdn.skypack.dev/pin/unescape@v1.0.1-tV3WgE7fPDTxMU8TYjNS/mode=imports,min/optimized/unescape.js'
 import renderMathInElement from "https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/contrib/auto-render.mjs"
 
 const practiceCheckers = {
@@ -182,18 +179,18 @@ for (const k of Object.keys(practiceCheckers)) {
     }
   })
 }
-function renderHljsInElement(ele) {
-  hljs.registerLanguage('html', hljsLangHtml)
-  hljs.registerLanguage('css', hljsLangCss)
-  hljs.registerLanguage('javascript', hljsLangJavascript)
 
-  for (const language of ['html', 'css', 'javascript']) {
-    ele.querySelectorAll(`pre.hljs.lang-${language}`).forEach(x => {
-      const highlighted = hljs.highlight(unescape(x.innerHTML), { language }).value
+async function renderCodeBlockInElement(ele) {
+  const langs = ['html', 'css', 'js']
+  shiki.setCDN('https://cdn.jsdelivr.net/npm/shiki@0.10.1/')
+  const highlighter = await shiki.getHighlighter({ theme: 'nord', langs })
+  for (const lang of langs) {
+    ele.querySelectorAll(`pre.shiki.lang-${lang}`).forEach(x => {
+      const highlighted = highlighter.codeToHtml(unescape(x.innerHTML), { lang })
       x.innerHTML = highlighted
     })
   }
 }
 
-renderHljsInElement(document.body)
+renderCodeBlockInElement(document.body)
 renderMathInElement(document.body)
